@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Comprar plantilla Moderno · Censo Materno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+    --bg: #090d22;
+    --text: #eef1ff;
+    --lead: #8e9ac6;
+    --muted: #77829f;
+    --card-border: rgba(255,255,255,.10);
+    --field: rgba(255,255,255,.055);
+    --field-border: rgba(255,255,255,.15);
+    --accent: #c2006b;
+    --accent-hover: #d1007a;
+    --ok: #5fd39a;
+    --err: #ff8a9b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text);
+    background:
+      radial-gradient(45% 45% at 0% 62%, rgba(110,30,80,.60), transparent 72%),
+      radial-gradient(55% 60% at 100% 12%, rgba(28,56,170,.65), transparent 72%),
+      var(--bg);
+    background-attachment: fixed;
+    padding: env(safe-area-inset-top, 0px) 16px env(safe-area-inset-bottom, 0px);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 14px 0 64px; }
+  .back { display: inline-flex; gap: 6px; align-items: center; color: #aab3d6; text-decoration: none; font-size: 15px; }
+  .back:hover, .back:focus-visible { color: var(--text); }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400; font-size: clamp(34px, 9.2vw, 46px); line-height: 1.08;
+    margin: 18px 0 10px; letter-spacing: -.005em; color: #eef1ff;
+  }
+  .lead { color: var(--lead); font-size: 15px; line-height: 1.5; margin: 0 0 32px; }
+  .card {
+    background: linear-gradient(160deg, rgba(255,255,255,.075), rgba(255,255,255,.035) 55%, rgba(255,255,255,.045));
+    border: 1px solid var(--card-border);
+    border-radius: 26px; padding: 32px 32px 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  }
+  .product { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid var(--card-border); }
+  .product h2 { margin: 0 0 8px; font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; }
+  .product p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; max-width: 290px; }
+  .price { white-space: nowrap; display: flex; align-items: baseline; gap: 3px; margin-top: -2px; }
+  .price small { color: var(--muted); font-size: 14px; }
+  .price strong { font-family: var(--font-display); font-weight: 400; font-size: 36px; line-height: 1; }
+  .field { margin-top: 22px; }
+  label { display: block; font-weight: 600; font-size: 15px; margin-bottom: 3px; letter-spacing: -.005em; }
+  .hint { color: var(--muted); font-size: 13px; margin: 0 0 9px; }
+  input[type=text] {
+    width: 100%; height: 46px; padding: 0 16px; font: inherit; font-size: 15px; color: var(--text);
+    background: var(--field); border: 1px solid var(--field-border); border-radius: 14px;
+  }
+  input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #7aa2ff; outline-offset: 3px; }
+  .pay {
+    width: 100%; height: 50px; margin-top: 18px; border: 0; border-radius: 18px;
+    background: var(--accent); color: #fff; font: inherit; font-weight: 700; font-size: 17px; letter-spacing: -.01em; cursor: pointer;
+    box-shadow: 0 8px 26px rgba(194,0,107,.38); transition: background .15s, transform .1s;
+  }
+  .pay:hover { background: var(--accent-hover); }
+  .pay:active { transform: translateY(1px); }
+  .pay:disabled { opacity: .6; cursor: progress; }
+  .status { margin: 14px 0 0; text-align: center; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+  .status.err { color: var(--err); }
+  .license { display: none; }
+  .license.show { display: block; }
+  .license h2 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+  .license .key {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 17px; letter-spacing: .04em;
+    background: var(--field); border: 1px solid var(--ok); border-radius: 14px; padding: 14px 16px;
+    word-break: break-all; margin: 14px 0;
+  }
+  .copy {
+    height: 44px; padding: 0 20px; border-radius: 14px; border: 1px solid var(--field-border);
+    background: var(--field); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+  }
+  @media (max-width: 420px) { .card { padding: 24px 20px 22px; } .product { flex-direction: column; gap: 10px; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="censo-materno-vista-previa.html">← Volver al sitio</a>
+  <h1>Comprar plantilla Moderno</h1>
+  <p class="lead">Licencia de la plantilla Moderno con pago seguro mediante PayPal. Al confirmar el pago recibirás tu clave de licencia en esta misma página.</p>
+
+  <section class="card">
+
+    <div id="buyBox">
+      <div class="product">
+        <div>
+          <h2>Plantilla Moderno — Censo Materno</h2>
+          <p>Pago único · sin suscripción · plantilla Moderno incluida</p>
+        </div>
+        <div class="price"><small>US$</small><strong id="priceText">3.99</strong></div>
+      </div>
+
+      <div class="field">
+        <label for="licName">Nombre para la licencia</label>
+        <p class="hint" id="licNameHint">Aparecerá en tu licencia (persona o establecimiento de salud).</p>
+        <input type="text" id="licName" autocomplete="organization" maxlength="120" aria-describedby="licNameHint">
+      </div>
+
+      <div class="field">
+        <label for="licContact">Correo o WhatsApp (opcional)</label>
+        <p class="hint" id="licContactHint">Solo para ayudarte si necesitas recuperar tu licencia.</p>
+        <input type="text" id="licContact" autocomplete="email" maxlength="120" aria-describedby="licContactHint">
+      </div>
+
+      <button class="pay" id="payBtn" type="button">Pagar US$3.99 con PayPal</button>
+      <p class="status" id="status" role="status">Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.</p>
+    </div>
+
+    <div class="license" id="licenseBox" aria-live="polite">
+      <h2>Pago confirmado</h2>
+      <p class="hint">Esta es tu clave de licencia de la plantilla Moderno. Guárdala en un lugar seguro.</p>
+      <div class="key" id="licenseKey"></div>
+      <button class="copy" id="copyBtn" type="button">Copiar clave</button>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN — completar con tus valores reales de Moderno
+   (no toca el checkout de la licencia completa de US$10)
+   ============================================================ */
+const MODERNO_CONFIG = {
+  price: "3.99",
+  currency: "USD",
+  // Funciones de Firebase EXCLUSIVAS de Moderno (HTTPS). Reemplazar por las URLs/nombres existentes:
+  createOrderUrl:  "https://REGION-PROYECTO.cloudfunctions.net/createModernoOrder",
+  captureOrderUrl: "https://REGION-PROYECTO.cloudfunctions.net/captureModernoOrder"
+};
+
+const $ = id => document.getElementById(id);
+const statusEl = $("status"), payBtn = $("payBtn");
+
+$("priceText").textContent = MODERNO_CONFIG.price;
+payBtn.textContent = `Pagar US$${MODERNO_CONFIG.price} con PayPal`;
+
+function setStatus(msg, isErr) { statusEl.textContent = msg; statusEl.classList.toggle("err", !!isErr); }
+
+function showLicense(key) {
+  $("buyBox").style.display = "none";
+  $("licenseKey").textContent = key;
+  $("licenseBox").classList.add("show");
+  try { sessionStorage.setItem("moderno_license", key); } catch (e) {}
+}
+
+async function postJSON(url, body) {
+  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || data.message || "Error del servidor");
+  return data;
+}
+
+/* 1) Crear la orden y redirigir a PayPal */
+payBtn.addEventListener("click", async () => {
+  const name = $("licName").value.trim();
+  if (!name) { setStatus("Escribe el nombre para la licencia.", true); $("licName").focus(); return; }
+  payBtn.disabled = true; setStatus("Creando tu orden…");
+  try {
+    const data = await postJSON(MODERNO_CONFIG.createOrderUrl, {
+      name, contact: $("licContact").value.trim(),
+      returnUrl: location.origin + location.pathname,
+      cancelUrl: location.origin + location.pathname
+    });
+    if (!data.approveUrl) throw new Error("No se recibió el enlace de PayPal.");
+    try { sessionStorage.setItem("moderno_order", data.orderId || ""); } catch (e) {}
+    location.href = data.approveUrl;
+  } catch (err) {
+    payBtn.disabled = false; setStatus(err.message || "No se pudo iniciar el pago.", true);
+  }
+});
+
+/* 2) Al volver de PayPal (?token=ORDER_ID), capturar el pago y mostrar la clave */
+(async function handleReturn() {
+  const p = new URLSearchParams(location.search);
+  const orderId = p.get("token");
+  if (p.get("cancelado")) { setStatus("Pago cancelado. Puedes intentarlo de nuevo."); return; }
+  if (!orderId) return;
+  payBtn.disabled = true; setStatus("Confirmando tu pago…");
+  try {
+    const data = await postJSON(MODERNO_CONFIG.captureOrderUrl, { orderId });
+    if (!data.licenseKey) throw new Error("El pago no devolvió una clave de licencia.");
+    history.replaceState(null, "", location.pathname);
+    showLicense(data.licenseKey);
+  } catch (err) {
+    payBtn.disabled = false; setStatus(err.message || "No se pudo confirmar el pago.", true);
+  }
+})();
+
+$("copyBtn").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText($("licenseKey").textContent); $("copyBtn").textContent = "Copiada"; }
+  catch (e) { $("copyBtn").textContent = "Selecciona y copia la clave"; }
+});
+</script>
+</body>
+</html>
