@@ -1,214 +1,323 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Comprar plantilla Moderno · Censo Materno</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
-    --bg: #090d22;
-    --text: #eef1ff;
-    --lead: #8e9ac6;
-    --muted: #77829f;
-    --card-border: rgba(255,255,255,.10);
-    --field: rgba(255,255,255,.055);
-    --field-border: rgba(255,255,255,.15);
-    --accent: #c2006b;
-    --accent-hover: #d1007a;
-    --ok: #5fd39a;
-    --err: #ff8a9b;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; min-height: 100%; }
-  body {
-    font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--text);
-    background:
-      radial-gradient(45% 45% at 0% 62%, rgba(110,30,80,.60), transparent 72%),
-      radial-gradient(55% 60% at 100% 12%, rgba(28,56,170,.65), transparent 72%),
-      var(--bg);
-    background-attachment: fixed;
-    padding: env(safe-area-inset-top, 0px) 16px env(safe-area-inset-bottom, 0px);
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 520px; margin: 0 auto; padding: 14px 0 64px; }
-  .back { display: inline-flex; gap: 6px; align-items: center; color: #aab3d6; text-decoration: none; font-size: 15px; }
-  .back:hover, .back:focus-visible { color: var(--text); }
-  h1 {
-    font-family: var(--font-display);
-    font-weight: 400; font-size: clamp(34px, 9.2vw, 46px); line-height: 1.08;
-    margin: 18px 0 10px; letter-spacing: -.005em; color: #eef1ff;
-  }
-  .lead { color: var(--lead); font-size: 15px; line-height: 1.5; margin: 0 0 32px; }
-  .card {
-    background: linear-gradient(160deg, rgba(255,255,255,.075), rgba(255,255,255,.035) 55%, rgba(255,255,255,.045));
-    border: 1px solid var(--card-border);
-    border-radius: 26px; padding: 32px 32px 28px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.25);
-  }
-  .product { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid var(--card-border); }
-  .product h2 { margin: 0 0 8px; font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; }
-  .product p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; max-width: 290px; }
-  .price { white-space: nowrap; display: flex; align-items: baseline; gap: 3px; margin-top: -2px; }
-  .price small { color: var(--muted); font-size: 14px; }
-  .price strong { font-family: var(--font-display); font-weight: 400; font-size: 36px; line-height: 1; }
-  .field { margin-top: 22px; }
-  label { display: block; font-weight: 600; font-size: 15px; margin-bottom: 3px; letter-spacing: -.005em; }
-  .hint { color: var(--muted); font-size: 13px; margin: 0 0 9px; }
-  input[type=text] {
-    width: 100%; height: 46px; padding: 0 16px; font: inherit; font-size: 15px; color: var(--text);
-    background: var(--field); border: 1px solid var(--field-border); border-radius: 14px;
-  }
-  input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #7aa2ff; outline-offset: 3px; }
-  .pay {
-    width: 100%; height: 50px; margin-top: 18px; border: 0; border-radius: 18px;
-    background: var(--accent); color: #fff; font: inherit; font-weight: 700; font-size: 17px; letter-spacing: -.01em; cursor: pointer;
-    box-shadow: 0 8px 26px rgba(194,0,107,.38); transition: background .15s, transform .1s;
-  }
-  .pay:hover { background: var(--accent-hover); }
-  .pay:active { transform: translateY(1px); }
-  .pay:disabled { opacity: .6; cursor: progress; }
-  .status { margin: 14px 0 0; text-align: center; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
-  .status.err { color: var(--err); }
-  .license { display: none; }
-  .license.show { display: block; }
-  .license h2 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
-  .license .key {
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 17px; letter-spacing: .04em;
-    background: var(--field); border: 1px solid var(--ok); border-radius: 14px; padding: 14px 16px;
-    word-break: break-all; margin: 14px 0;
-  }
-  .copy {
-    height: 44px; padding: 0 20px; border-radius: 14px; border: 1px solid var(--field-border);
-    background: var(--field); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
-  }
-  @media (max-width: 420px) { .card { padding: 24px 20px 22px; } .product { flex-direction: column; gap: 10px; } }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Comprar plantilla Moderno — Pago seguro</title>
+  <meta name="robots" content="noindex" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#0A1430" />
+  <link rel="icon" type="image/webp" href="data:image/webp;base64,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" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+  /* Checkout de la PLANTILLA MODERNO (US$3.99). Independiente del checkout
+     de la licencia de US$10 (checkout.html), que no se modifica.
+     Configuración pública (sin secretos).
+     Los secretos de PayPal y la clave privada de licencias viven solo en
+     Firebase Secret Manager; esta página solo llama a las Cloud Functions. */
+  window.CENSO_CHECKOUT = {
+    functionsBase: "https://us-central1-censo-materno.cloudfunctions.net",
+    sandbox: true   // cambiar a false al pasar a PayPal en producción
+  };
+  </script>
+  <style>
+    :root{--bg:#0A1430;--text:#EEF3FF;--text-2:#A8B4D0;--text-3:#8D9AB9;--hair:rgba(255,255,255,.1);--pink:#e91e8c;--pink-btn:#d1127a;--pink-btn-hover:#b80f6b;--teal:#2dd4a7;--danger:#ff8a9e;
+      --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:Fraunces,Georgia,serif;--ease:cubic-bezier(.22,.8,.24,1)}
+    *{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+    .aur{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+    .aur i{position:absolute;border-radius:50%;filter:blur(90px);animation:drift 20s ease-in-out infinite alternate}
+    .aur i:nth-child(1){width:620px;height:620px;background:#2A57C9;opacity:.5;top:-220px;right:-120px}
+    .aur i:nth-child(2){width:460px;height:460px;background:#F0629A;opacity:.26;top:24vh;left:-170px;animation-duration:26s}
+    .aur i:nth-child(3){width:380px;height:380px;background:#3DD0A0;opacity:.15;bottom:-150px;right:26%;animation-duration:30s}
+    @keyframes drift{to{transform:translate3d(-60px,50px,0) scale(1.15)}}
+    @media(max-width:700px){.aur i{filter:blur(60px)}.aur i:nth-child(1){width:420px;height:420px}}
+    @media (prefers-reduced-motion:reduce){.aur i{animation:none}}
+    header,main,footer{position:relative;z-index:1}
+    .wrap{width:min(560px,100% - 32px);margin:0 auto}
+    header{background:rgba(10,20,48,.6);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 1px 0 var(--hair)}
+    .header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;width:min(1120px,100% - 32px)}
+    .brand{display:inline-flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:17px}
+    .brand img{width:36px;height:36px;border-radius:10px}
+    .lang-switch{display:inline-flex;border:1px solid var(--hair);border-radius:12px;overflow:hidden}
+    .lang-switch button{font:inherit;font-size:14px;font-weight:700;color:var(--text-2);background:transparent;border:0;min-height:40px;min-width:44px;cursor:pointer}
+    .lang-switch button[aria-pressed="true"]{background:rgba(255,255,255,.12);color:#fff}
+    main{padding:40px 0 56px}
+    .back{display:inline-flex;align-items:center;gap:6px;color:var(--text-2);text-decoration:none;font-size:15px;margin-bottom:18px}
+    .back:hover{color:#fff}
+    h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.06;letter-spacing:-.03em;margin:0 0 10px}
+    .lead{color:var(--text-2);margin:0 0 26px}
+    .card{background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));box-shadow:inset 0 0 0 1px var(--hair);border-radius:22px;padding:24px 20px}
+    @media (min-width:600px){.card{padding:32px 34px}}
+    .summary{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid var(--hair)}
+    .summary h2{margin:0;font-size:18px;font-weight:700}
+    .summary p{margin:4px 0 0;color:var(--text-2);font-size:14.5px}
+    .price{white-space:nowrap;font-family:var(--display);font-size:32px;line-height:1}
+    .price small{font-family:var(--font);font-size:14px;color:var(--text-2);margin-right:2px}
+    label{display:block;font-weight:600;font-size:15px;margin:0 0 6px}
+    .hint{display:block;color:var(--text-3);font-weight:400;font-size:13.5px;margin-top:2px}
+    input,textarea{width:100%;font:inherit;font-size:16px;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 14px;min-height:48px}
+    input:focus,textarea:focus{outline:2px solid var(--pink);outline-offset:1px;border-color:transparent}
+    .field{margin-bottom:18px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;padding:0 22px;border:2px solid transparent;border-radius:14px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;cursor:pointer;transition:background-color .18s,box-shadow .18s,transform .18s}
+    .btn-primary{background:var(--pink-btn);color:#fff;box-shadow:0 10px 30px -10px rgba(233,30,140,.7)}
+    .btn-primary:hover{background:var(--pink-btn-hover);box-shadow:0 18px 40px -12px rgba(233,30,140,.85)}
+    .btn-primary[disabled]{opacity:.6;cursor:progress}
+    .btn-outline{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.35)}
+    .btn-outline:hover{background:#fff;color:#16213e}
+    .btn + .btn{margin-top:12px}
+    .fine{color:var(--text-3);font-size:13.5px;margin:14px 0 0;text-align:center}
+    .sandbox{display:flex;gap:8px;align-items:flex-start;background:rgba(131,205,253,.1);border:1px solid rgba(131,205,253,.35);color:#cfe9ff;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:20px}
+    .msg{border-radius:12px;padding:12px 14px;font-size:15px;margin-bottom:18px}
+    .msg-error{background:rgba(255,138,158,.1);border:1px solid rgba(255,138,158,.4);color:#ffd3db}
+    .msg-ok{background:rgba(45,212,167,.1);border:1px solid rgba(45,212,167,.4);color:#c7f6e7}
+    .spinner{width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:var(--pink);animation:spin .9s linear infinite;margin:6px auto 16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .center{text-align:center}
+    .lic-id{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;word-break:break-all}
+    textarea.lic-key{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.45;min-height:120px;resize:vertical;word-break:break-all}
+    .steps{color:var(--text-2);padding-left:20px;margin:16px 0 0}
+    .steps li{margin-bottom:6px}
+    [hidden]{display:none!important}
+    footer{color:var(--text-3);font-size:13.5px;text-align:center;padding:0 0 32px}
+    footer a{color:var(--text-2)}
+  </style>
 </head>
 <body>
-<main class="wrap">
-  <a class="back" href="censo-materno-vista-previa.html">← Volver al sitio</a>
-  <h1>Comprar plantilla Moderno</h1>
-  <p class="lead">Licencia de la plantilla Moderno con pago seguro mediante PayPal. Al confirmar el pago recibirás tu clave de licencia en esta misma página.</p>
+  <div class="aur" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header>
+    <div class="wrap header-row">
+      <a class="brand" href="./" aria-label="Censo Materno — inicio"><img src="data:image/webp;base64,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" alt="" width="36" height="36" /><span>Censo Materno</span></a>
+      <div class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
 
-  <section class="card">
+  <main class="wrap">
+    <a class="back" href="./#precios" data-i18n="back">← Volver al sitio</a>
+    <h1 data-i18n="title">Comprar plantilla Moderno</h1>
+    <p class="lead" data-i18n="lead">Plantilla Moderno para Censo Materno con pago seguro mediante PayPal. Al confirmarse el pago, la plantilla se desbloquea en la aplicación desde la que iniciaste la compra.</p>
 
-    <div id="buyBox">
-      <div class="product">
+    <div class="card">
+      <div class="sandbox" id="sandbox-note" hidden><span aria-hidden="true">ⓘ</span><span data-i18n="sandbox">Modo de prueba (PayPal Sandbox): no se realizan cobros reales.</span></div>
+
+      <div class="summary">
         <div>
-          <h2>Plantilla Moderno — Censo Materno</h2>
-          <p>Pago único · sin suscripción · plantilla Moderno incluida</p>
+          <h2 data-i18n="product">Plantilla Moderno — Censo Materno</h2>
+          <p data-i18n="productSub">Pago único · se compra aparte · no incluye la licencia completa</p>
         </div>
-        <div class="price"><small>US$</small><strong id="priceText">3.99</strong></div>
+        <div class="price"><small>US$</small>3.99</div>
       </div>
 
-      <div class="field">
-        <label for="licName">Nombre para la licencia</label>
-        <p class="hint" id="licNameHint">Aparecerá en tu licencia (persona o establecimiento de salud).</p>
-        <input type="text" id="licName" autocomplete="organization" maxlength="120" aria-describedby="licNameHint">
+      <div id="msg" class="msg" role="alert" hidden></div>
+
+      <!-- Sin referencia de la app: no se puede vincular el pago a un teléfono -->
+      <div id="step-noref" hidden>
+        <div class="msg msg-ok" data-i18n="noRef">Para comprar la plantilla Moderno, ábrela desde la aplicación: Licenciamiento → «Comprar plantilla Moderno» (o Configuración → Cambiar plantilla). Así el pago se vincula a tu teléfono y la plantilla se desbloquea sola.</div>
+        <a class="btn btn-outline" href="./" data-i18n="home">Volver al inicio</a>
       </div>
 
-      <div class="field">
-        <label for="licContact">Correo o WhatsApp (opcional)</label>
-        <p class="hint" id="licContactHint">Solo para ayudarte si necesitas recuperar tu licencia.</p>
-        <input type="text" id="licContact" autocomplete="email" maxlength="120" aria-describedby="licContactHint">
+      <!-- Paso 1: pagar -->
+      <form id="step-form" novalidate hidden>
+        <button class="btn btn-primary" type="submit" id="pay-btn" data-i18n="payBtn">Pagar US$3.99 con PayPal</button>
+        <p class="fine" data-i18n="fine">Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.</p>
+      </form>
+
+      <!-- Paso 2: procesando -->
+      <div id="step-busy" class="center" hidden aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="busy-text"></p>
       </div>
 
-      <button class="pay" id="payBtn" type="button">Pagar US$3.99 con PayPal</button>
-      <p class="status" id="status" role="status">Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.</p>
+      <!-- Paso 3: pago confirmado (sin licencias ni códigos) -->
+      <div id="step-done" hidden>
+        <div class="msg msg-ok" data-i18n="doneMsg">¡Pago confirmado! La plantilla Moderno quedó registrada para tu aplicación.</div>
+        <ol class="steps">
+          <li data-i18n="s1">Vuelve a Censo Materno.</li>
+          <li data-i18n="s2">Abre Configuración → Cambiar plantilla: Moderno se desbloquea automáticamente (o pulsa «Ya pagué — comprobar compra»).</li>
+          <li data-i18n="s3">No necesitas ningún código.</li>
+        </ol>
+        <a class="btn btn-outline" href="./" data-i18n="home">Volver al inicio</a>
+      </div>
+
+      <!-- Pago cancelado -->
+      <div id="step-cancel" hidden>
+        <div class="msg msg-error" data-i18n="cancelMsg">Cancelaste el pago en PayPal. No se realizó ningún cobro.</div>
+        <button class="btn btn-primary" type="button" id="retry-btn" data-i18n="retry">Intentar de nuevo</button>
+        <a class="btn btn-outline" href="./" data-i18n="home">Volver al inicio</a>
+      </div>
     </div>
+  </main>
 
-    <div class="license" id="licenseBox" aria-live="polite">
-      <h2>Pago confirmado</h2>
-      <p class="hint">Esta es tu clave de licencia de la plantilla Moderno. Guárdala en un lugar seguro.</p>
-      <div class="key" id="licenseKey"></div>
-      <button class="copy" id="copyBtn" type="button">Copiar clave</button>
-    </div>
-  </section>
-</main>
+  <footer><span data-i18n="foot">¿Problemas con tu compra? Escríbenos desde el sitio de</span> <a href="./">Censo Materno</a>.</footer>
 
 <script>
-/* ============================================================
-   CONFIGURACIÓN — completar con tus valores reales de Moderno
-   (no toca el checkout de la licencia completa de US$10)
-   ============================================================ */
-const MODERNO_CONFIG = {
-  price: "3.99",
-  currency: "USD",
-  // Funciones de Firebase EXCLUSIVAS de Moderno (HTTPS). Reemplazar por las URLs/nombres existentes:
-  createOrderUrl:  "https://REGION-PROYECTO.cloudfunctions.net/createModernoOrder",
-  captureOrderUrl: "https://REGION-PROYECTO.cloudfunctions.net/captureModernoOrder"
-};
+(function () {
+  "use strict";
+  var CFG = window.CENSO_CHECKOUT || {};
+  var BASE = String(CFG.functionsBase || "").replace(/\/+$/, "");
+  var LANG_KEY = "cm-site-lang";
+  var REF_KEY = "cm-moderno-ref";        // referencia de la app (solo esta pestaña)
+  var PENDING_KEY = "cm-moderno-pending"; // orden en curso
+  var REF_RE = /^[A-Za-z0-9_-]{32,64}$/;
 
-const $ = id => document.getElementById(id);
-const statusEl = $("status"), payBtn = $("payBtn");
+  var T = {
+    es: {
+      back: "← Volver al sitio", title: "Comprar plantilla Moderno",
+      lead: "Plantilla Moderno para Censo Materno con pago seguro mediante PayPal. Al confirmarse el pago, la plantilla se desbloquea en la aplicación desde la que iniciaste la compra.",
+      sandbox: "Modo de prueba (PayPal Sandbox): no se realizan cobros reales.",
+      product: "Plantilla Moderno — Censo Materno", productSub: "Pago único · se compra aparte · no incluye la licencia completa",
+      noRef: "Para comprar la plantilla Moderno, ábrela desde la aplicación: Licenciamiento → «Comprar plantilla Moderno» (o Configuración → Cambiar plantilla). Así el pago se vincula a tu teléfono y la plantilla se desbloquea sola.",
+      payBtn: "Pagar US$3.99 con PayPal", fine: "Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.",
+      doneMsg: "¡Pago confirmado! La plantilla Moderno quedó registrada para tu aplicación.",
+      s1: "Vuelve a Censo Materno.",
+      s2: "Abre Configuración → Cambiar plantilla: Moderno se desbloquea automáticamente (o pulsa «Ya pagué — comprobar compra»).",
+      s3: "No necesitas ningún código.",
+      home: "Volver al inicio", cancelMsg: "Cancelaste el pago en PayPal. No se realizó ningún cobro.", retry: "Intentar de nuevo",
+      foot: "¿Problemas con tu compra? Escríbenos desde el sitio de",
+      busyCreate: "Conectando con PayPal…", busyCapture: "Confirmando tu pago…",
+      errCreate: "No se pudo iniciar el pago con PayPal. Revisa tu conexión e inténtalo de nuevo.",
+      errCapture: "No pudimos confirmar el pago todavía. Si PayPal ya te cobró, no pagues de nuevo: pulsa «Reintentar confirmación» o, en la app, «Ya pagué — comprobar compra». Número de orden: ",
+      retryCapture: "Reintentar confirmación"
+    },
+    en: {
+      back: "← Back to site", title: "Buy the Moderno template",
+      lead: "Moderno template for Censo Materno with secure payment through PayPal. Once the payment is confirmed, the template unlocks in the app you started the purchase from.",
+      sandbox: "Test mode (PayPal Sandbox): no real charges are made.",
+      product: "Moderno template — Censo Materno", productSub: "One-time payment · purchased separately · does not include the full license",
+      noRef: "To buy the Moderno template, start from the app: Licensing → “Buy Moderno template” (or Settings → Change template). That links the payment to your phone and the template unlocks by itself.",
+      payBtn: "Pay US$3.99 with PayPal", fine: "You’ll be redirected to PayPal to complete the payment. We don’t store your card details.",
+      doneMsg: "Payment confirmed! The Moderno template is now registered for your app.",
+      s1: "Go back to Censo Materno.",
+      s2: "Open Settings → Change template: Moderno unlocks automatically (or tap “I already paid — check purchase”).",
+      s3: "You don’t need any code.",
+      home: "Back to home", cancelMsg: "You cancelled the payment on PayPal. You were not charged.", retry: "Try again",
+      foot: "Problems with your purchase? Contact us from the",
+      busyCreate: "Connecting to PayPal…", busyCapture: "Confirming your payment…",
+      errCreate: "Couldn’t start the PayPal payment. Check your connection and try again.",
+      errCapture: "We couldn’t confirm the payment yet. If PayPal already charged you, don’t pay again: tap “Retry confirmation” or, in the app, “I already paid — check purchase”. Order number: ",
+      retryCapture: "Retry confirmation"
+    }
+  };
 
-$("priceText").textContent = MODERNO_CONFIG.price;
-payBtn.textContent = `Pagar US$${MODERNO_CONFIG.price} con PayPal`;
+  var $ = function (id) { return document.getElementById(id); };
+  var lang = pickLang();
+  var payLabelKey = "payBtn";
+  var retryOrderId = null;
 
-function setStatus(msg, isErr) { statusEl.textContent = msg; statusEl.classList.toggle("err", !!isErr); }
-
-function showLicense(key) {
-  $("buyBox").style.display = "none";
-  $("licenseKey").textContent = key;
-  $("licenseBox").classList.add("show");
-  try { sessionStorage.setItem("moderno_license", key); } catch (e) {}
-}
-
-async function postJSON(url, body) {
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || data.message || "Error del servidor");
-  return data;
-}
-
-/* 1) Crear la orden y redirigir a PayPal */
-payBtn.addEventListener("click", async () => {
-  const name = $("licName").value.trim();
-  if (!name) { setStatus("Escribe el nombre para la licencia.", true); $("licName").focus(); return; }
-  payBtn.disabled = true; setStatus("Creando tu orden…");
-  try {
-    const data = await postJSON(MODERNO_CONFIG.createOrderUrl, {
-      name, contact: $("licContact").value.trim(),
-      returnUrl: location.origin + location.pathname,
-      cancelUrl: location.origin + location.pathname
-    });
-    if (!data.approveUrl) throw new Error("No se recibió el enlace de PayPal.");
-    try { sessionStorage.setItem("moderno_order", data.orderId || ""); } catch (e) {}
-    location.href = data.approveUrl;
-  } catch (err) {
-    payBtn.disabled = false; setStatus(err.message || "No se pudo iniciar el pago.", true);
+  function pickLang() {
+    var q = new URLSearchParams(location.search).get("lang");
+    if (q === "es" || q === "en") return q;
+    try { var s = localStorage.getItem(LANG_KEY); if (s === "es" || s === "en") return s; } catch (e) {}
+    return "es";
   }
-});
+  function t(k) { return (T[lang] && T[lang][k]) || T.es[k] || ""; }
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.title = lang === "en" ? "Buy the Moderno template — Secure checkout" : "Comprar plantilla Moderno — Pago seguro";
+    document.querySelectorAll("[data-i18n]").forEach(function (el) { el.textContent = t(el.getAttribute("data-i18n")); });
+    document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
+    $("pay-btn").textContent = t(payLabelKey);
+  }
+  document.querySelectorAll("[data-lang]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      lang = b.dataset.lang; try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+      applyLang();
+    });
+  });
 
-/* 2) Al volver de PayPal (?token=ORDER_ID), capturar el pago y mostrar la clave */
-(async function handleReturn() {
-  const p = new URLSearchParams(location.search);
-  const orderId = p.get("token");
-  if (p.get("cancelado")) { setStatus("Pago cancelado. Puedes intentarlo de nuevo."); return; }
-  if (!orderId) return;
-  payBtn.disabled = true; setStatus("Confirmando tu pago…");
-  try {
-    const data = await postJSON(MODERNO_CONFIG.captureOrderUrl, { orderId });
-    if (!data.licenseKey) throw new Error("El pago no devolvió una clave de licencia.");
-    history.replaceState(null, "", location.pathname);
-    showLicense(data.licenseKey);
-  } catch (err) {
-    payBtn.disabled = false; setStatus(err.message || "No se pudo confirmar el pago.", true);
+  function ss(op, k, v) {
+    try {
+      if (op === "get") { var raw = sessionStorage.getItem(k); return raw ? JSON.parse(raw) : null; }
+      if (op === "set") sessionStorage.setItem(k, JSON.stringify(v));
+      if (op === "del") sessionStorage.removeItem(k);
+    } catch (e) { return null; }
+  }
+  function show(step) {
+    ["step-noref", "step-form", "step-busy", "step-done", "step-cancel"].forEach(function (id) { $(id).hidden = id !== step; });
+  }
+  function busy(textKey) { $("busy-text").textContent = t(textKey); show("step-busy"); }
+  function message(text) {
+    var m = $("msg");
+    if (!text) { m.hidden = true; m.textContent = ""; return; }
+    m.className = "msg msg-error"; m.textContent = text; m.hidden = false;
+  }
+  async function post(fn, body) {
+    var r = await fetch(BASE + "/" + fn, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+    var data = null;
+    try { data = await r.json(); } catch (e) {}
+    if (!r.ok || !data || data.ok !== true) { var err = new Error((data && data.message) || ("HTTP " + r.status)); err.status = r.status; throw err; }
+    return data;
+  }
+
+  // Paso 1 → PayPal. Solo se envía la referencia: el precio lo fija el servidor.
+  async function startPayment(ref) {
+    message(""); busy("busyCreate");
+    try {
+      var order = await post("createModernoOrder", { ref: ref });
+      if (order.amount !== "3.99" || !order.orderId || !/^https:\/\/([a-z0-9-]+\.)*paypal\.com\//i.test(order.approvalUrl || "")) throw new Error("order");
+      ss("set", PENDING_KEY, { orderId: order.orderId });
+      location.assign(order.approvalUrl);
+    } catch (e) {
+      show("step-form"); message(t("errCreate"));
+    }
+  }
+
+  // Regreso de PayPal → confirmación en el servidor (sin códigos).
+  async function finishPayment(orderId) {
+    message(""); busy("busyCapture");
+    try {
+      await post("captureModernoOrder", { orderId: orderId });
+      ss("del", PENDING_KEY);
+      show("step-done");
+    } catch (e) {
+      retryOrderId = orderId;
+      payLabelKey = "retryCapture"; applyLang();
+      show("step-form"); message(t("errCapture") + orderId);
+    }
+  }
+
+  $("step-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (retryOrderId) { finishPayment(retryOrderId); return; }
+    var ref = ss("get", REF_KEY);
+    if (!ref || !REF_RE.test(ref)) { show("step-noref"); return; }
+    startPayment(ref);
+  });
+  $("retry-btn").addEventListener("click", function () {
+    retryOrderId = null; payLabelKey = "payBtn"; applyLang(); message("");
+    var ref = ss("get", REF_KEY);
+    show(ref && REF_RE.test(ref) ? "step-form" : "step-noref");
+  });
+
+  // ---- Arranque ----------------------------------------------------------
+  applyLang();
+  $("sandbox-note").hidden = !CFG.sandbox;
+
+  var q = new URLSearchParams(location.search);
+  var urlRef = q.get("ref");
+  if (urlRef && REF_RE.test(urlRef)) ss("set", REF_KEY, urlRef);
+  var flow = q.get("paypal");
+  var token = q.get("token");
+  if (urlRef || flow || token) {
+    // Quita la referencia y el token de la barra de direcciones / historial.
+    history.replaceState(null, "", location.pathname + (q.get("lang") ? "?lang=" + q.get("lang") : ""));
+  }
+
+  if (flow === "cancel") {
+    ss("del", PENDING_KEY);
+    show("step-cancel");
+  } else if (flow === "return" && token && /^[A-Z0-9]{5,40}$/i.test(token)) {
+    finishPayment(token);
+  } else {
+    var ref = ss("get", REF_KEY);
+    show(ref && REF_RE.test(ref) ? "step-form" : "step-noref");
   }
 })();
-
-$("copyBtn").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText($("licenseKey").textContent); $("copyBtn").textContent = "Copiada"; }
-  catch (e) { $("copyBtn").textContent = "Selecciona y copia la clave"; }
-});
 </script>
 </body>
 </html>
