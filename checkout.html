@@ -16,7 +16,10 @@
      Firebase Secret Manager; esta página solo llama a las Cloud Functions. */
   window.CENSO_CHECKOUT = {
     functionsBase: "https://us-central1-censo-materno.cloudfunctions.net",
-    sandbox: true   // cambiar a false al pasar a PayPal en producción
+    sandbox: true,  // cambiar a false al pasar a PayPal en producción
+    // Mismo APK Trial que el botón «Pruébalo gratis» del sitio (index.html).
+    // Solo se ofrece tras una licencia emitida por capturePayPalOrder.
+    trialApkUrl: "https://github.com/Censo-Materno/censo-materno.github.io/releases/download/trial-v1.17.1/CensoMaterno-v1.17.1-TRIAL-release.apk"
   };
   </script>
   <style>
@@ -147,10 +150,12 @@
           <textarea id="lic-key" class="lic-key" readonly spellcheck="false" autocomplete="off"></textarea>
         </div>
         <button class="btn btn-primary" type="button" id="copy-btn" data-i18n="copy">Copiar clave</button>
+        <a class="btn btn-primary" id="trial-dl" hidden data-i18n="dlTrial">Descargar Censo Materno Trial</a>
         <ol class="steps">
           <li data-i18n="s1">Guarda esta clave en un lugar seguro (por ejemplo, envíatela por correo).</li>
-          <li data-i18n="s2">Abre Censo Materno y pégala en la pantalla de activación de licencia.</li>
-          <li data-i18n="s3">La licencia es personal y válida para 1 dispositivo.</li>
+          <li data-i18n="s2">Descarga e instala Censo Materno Trial con el botón de arriba y ábrelo.</li>
+          <li data-i18n="s3">En la app, ve a Configuración → Licenciamiento, pulsa «Activar licencia» y pega la clave.</li>
+          <li data-i18n="s4">La licencia es personal y válida para 1 dispositivo.</li>
         </ol>
         <a class="btn btn-outline" href="./" data-i18n="home">Volver al inicio</a>
       </div>
@@ -187,8 +192,9 @@
       doneMsg: "¡Pago confirmado! Esta es tu licencia de Censo Materno.", licIdLabel: "ID de licencia", licKeyLabel: "Clave de licencia",
       copy: "Copiar clave", copied: "Clave copiada ✓",
       s1: "Guarda esta clave en un lugar seguro (por ejemplo, envíatela por correo).",
-      s2: "Abre Censo Materno y pégala en la pantalla de activación de licencia.",
-      s3: "La licencia es personal y válida para 1 dispositivo.",
+      s2: "Descarga e instala Censo Materno Trial con el botón de arriba y ábrelo.",
+      s3: "En la app, ve a Configuración → Licenciamiento, pulsa «Activar licencia» y pega la clave.",
+      s4: "La licencia es personal y válida para 1 dispositivo.", dlTrial: "Descargar Censo Materno Trial",
       home: "Volver al inicio", cancelMsg: "Cancelaste el pago en PayPal. No se realizó ningún cobro.", retry: "Intentar de nuevo",
       foot: "¿Problemas con tu compra? Escríbenos desde el sitio de",
       busyCreate: "Conectando con PayPal…", busyCapture: "Confirmando tu pago y generando tu licencia…",
@@ -209,8 +215,9 @@
       doneMsg: "Payment confirmed! Here is your Censo Materno license.", licIdLabel: "License ID", licKeyLabel: "License key",
       copy: "Copy key", copied: "Key copied ✓",
       s1: "Keep this key somewhere safe (for example, email it to yourself).",
-      s2: "Open Censo Materno and paste it on the license activation screen.",
-      s3: "The license is personal and valid for 1 device.",
+      s2: "Download and install Censo Materno Trial with the button above, then open it.",
+      s3: "In the app, go to Configuración (Settings) → Licenciamiento (Licensing), tap “Activar licencia” and paste the key.",
+      s4: "The license is personal and valid for 1 device.", dlTrial: "Download Censo Materno Trial",
       home: "Back to home", cancelMsg: "You cancelled the payment on PayPal. You were not charged.", retry: "Try again",
       foot: "Problems with your purchase? Contact us from the",
       busyCreate: "Connecting to PayPal…", busyCapture: "Confirming your payment and generating your license…",
@@ -318,6 +325,10 @@
   function renderLicense(res) {
     $("lic-id").textContent = res.licenseId || "";
     $("lic-key").value = res.licenseKey || "";
+    // Descarga del Trial: solo con una licencia emitida por el servidor.
+    var dl = $("trial-dl");
+    if (res.licenseKey && /^https:\/\//.test(CFG.trialApkUrl || "")) { dl.href = CFG.trialApkUrl; dl.hidden = false; }
+    else { dl.removeAttribute("href"); dl.hidden = true; }
     show("step-done");
     message("");
   }
