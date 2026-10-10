@@ -16,7 +16,7 @@
      Firebase Secret Manager; esta página solo llama a las Cloud Functions. */
   window.CENSO_CHECKOUT = {
     functionsBase: "https://us-central1-censo-materno.cloudfunctions.net",
-    sandbox: true,  // cambiar a false al pasar a PayPal en producción
+    sandbox: false,  // Live: aviso «Modo de prueba» oculto (PayPal Live activado)
     // Mismo APK Trial que el botón «Pruébalo gratis» del sitio (index.html).
     // Solo se ofrece tras una licencia emitida por capturePayPalOrder.
     trialApkUrl: "https://github.com/Censo-Materno/censo-materno.github.io/releases/download/trial-v1.17.1-vinculo-sesion/CensoMaterno-v1.17.1-TRIAL-release-VINCULO-SESION.apk"
