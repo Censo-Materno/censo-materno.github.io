@@ -125,6 +125,8 @@
       <form id="step-form" novalidate hidden>
         <button class="btn btn-primary" type="submit" id="pay-btn" data-i18n="payBtn">Pagar US$2.99 con PayPal</button>
         <p class="fine" data-i18n="fine">Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.</p>
+        <a class="btn btn-outline" id="transfer-btn" style="margin-top:14px" href="#" target="_blank" rel="noopener noreferrer" data-i18n="transferBtn">Pagar por transferencia</a>
+        <p class="fine" data-i18n="transferNote">Te escribimos por WhatsApp con los datos de la cuenta; al recibir el pago, la plantilla se desbloquea en tu aplicación.</p>
       </form>
 
       <!-- Paso 2: procesando -->
@@ -172,6 +174,7 @@
       sandbox: "Modo de prueba (PayPal Sandbox): no se realizan cobros reales.",
       product: "Plantilla Lumen — Censo Materno", productSub: "Pago único · se compra aparte · no incluye la licencia completa ni otras plantillas",
       noRef: "Para comprar la plantilla Lumen, ábrela desde la aplicación: Configuración → Cambiar plantilla → Lumen. Así el pago se vincula a tu teléfono y la plantilla se desbloquea sola.",
+      transferBtn: "Pagar por transferencia", transferNote: "Te escribimos por WhatsApp con los datos de la cuenta; al recibir el pago, la plantilla se desbloquea en tu aplicación.",
       payBtn: "Pagar US$2.99 con PayPal", fine: "Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.",
       doneMsg: "¡Pago confirmado! La plantilla Lumen quedó registrada para tu aplicación.",
       s1: "Vuelve a Censo Materno.",
@@ -190,6 +193,7 @@
       sandbox: "Test mode (PayPal Sandbox): no real charges are made.",
       product: "Lumen template — Censo Materno", productSub: "One-time payment · purchased separately · does not include the full license or other templates",
       noRef: "To buy the Lumen template, start from the app: Settings → Change template → Lumen. That links the payment to your phone and the template unlocks by itself.",
+      transferBtn: "Pay by bank transfer", transferNote: "We message you on WhatsApp with the account details; once we receive the payment, the template unlocks in your app.",
       payBtn: "Pay US$2.99 with PayPal", fine: "You’ll be redirected to PayPal to complete the payment. We don’t store your card details.",
       doneMsg: "Payment confirmed! The Lumen template is now registered for your app.",
       s1: "Go back to Censo Materno.",
@@ -294,7 +298,15 @@
     show(ref && REF_RE.test(ref) ? "step-form" : "step-noref");
   });
 
-  // ---- Arranque ----------------------------------------------------------
+  // Transferencia: abre WhatsApp con el codigo de compra ya incluido.
+  $("transfer-btn").addEventListener("click", function () {
+    var r = ss("get", REF_KEY);
+    var msg = "Hola, quiero pagar la plantilla Lumen (US$2.99) por transferencia." +
+      (r && REF_RE.test(r) ? " Codigo de compra: " + r : "");
+    this.href = "https://wa.me/50584350255?text=" + encodeURIComponent(msg);
+  });
+
+  // ---- Arranque ----
   applyLang();
   $("sandbox-note").hidden = !CFG.sandbox;
 
