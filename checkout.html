@@ -19,7 +19,7 @@
     sandbox: false,  // Live: aviso «Modo de prueba» oculto (PayPal Live activado)
     // Mismo APK Trial que el botón «Pruébalo gratis» del sitio (index.html).
     // Solo se ofrece tras una licencia emitida por capturePayPalOrder.
-    trialApkUrl: "https://github.com/Censo-Materno/censo-materno.github.io/releases/download/trial-v1.17.1-vinculo-sesion/CensoMaterno-v1.17.1-TRIAL-release-VINCULO-SESION.apk"
+    trialApkUrl: "https://github.com/Censo-Materno/censo-materno.github.io/releases/latest/download/app-trial-release.apk"
   };
   </script>
   <style>
@@ -130,6 +130,8 @@
         </div>
         <button class="btn btn-primary" type="submit" id="pay-btn" data-i18n="payBtn">Pagar US$10.00 con PayPal</button>
         <p class="fine" data-i18n="fine">Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.</p>
+        <a class="btn btn-outline" id="transfer-btn" style="margin-top:14px" href="#" target="_blank" rel="noopener noreferrer" data-i18n="transferBtn">Pagar por transferencia bancaria</a>
+        <p class="fine" data-i18n="transferNote">Te escribimos por WhatsApp con los datos de la cuenta; al recibir el pago, te enviamos tu clave de licencia.</p>
       </form>
 
       <!-- Paso 2: procesando -->
@@ -183,11 +185,12 @@
   var T = {
     es: {
       back: "← Volver al sitio", title: "Comprar Censo Materno",
-      lead: "Licencia completa con pago seguro mediante PayPal. Al confirmar el pago recibirás tu clave de licencia en esta misma página.",
+      lead: "Licencia completa con pago seguro mediante PayPal o por transferencia bancaria. Con PayPal recibes tu clave de licencia en esta misma página; con transferencia te la enviamos por WhatsApp.",
       sandbox: "Modo de prueba (PayPal Sandbox): no se realizan cobros reales.",
       product: "Licencia completa — Censo Materno", productSub: "Pago único · sin suscripción · plantillas Clásico y Compacto incluidas",
       nameLabel: "Nombre para la licencia", nameHint: "Aparecerá en tu licencia (persona o establecimiento de salud).",
       contactLabel: "Correo o WhatsApp (opcional)", contactHint: "Solo para ayudarte si necesitas recuperar tu licencia.",
+      transferBtn: "Pagar por transferencia bancaria", transferNote: "Te escribimos por WhatsApp con los datos de la cuenta; al recibir el pago, te enviamos tu clave de licencia.",
       payBtn: "Pagar US$10.00 con PayPal", fine: "Serás redirigido a PayPal para completar el pago. No guardamos datos de tu tarjeta.",
       doneMsg: "¡Pago confirmado! Esta es tu licencia de Censo Materno.", licIdLabel: "ID de licencia", licKeyLabel: "Clave de licencia",
       copy: "Copiar clave", copied: "Clave copiada ✓",
@@ -206,11 +209,12 @@
     },
     en: {
       back: "← Back to site", title: "Buy Censo Materno",
-      lead: "Full license with secure payment through PayPal. Once the payment is confirmed you’ll get your license key on this same page.",
+      lead: "Full license with secure payment through PayPal or by bank transfer. With PayPal you get your license key on this same page; with a transfer we send it to you on WhatsApp.",
       sandbox: "Test mode (PayPal Sandbox): no real charges are made.",
       product: "Full license — Censo Materno", productSub: "One-time payment · no subscription · Clásico and Compacto templates included",
       nameLabel: "Name for the license", nameHint: "It will appear on your license (person or health facility).",
       contactLabel: "Email or WhatsApp (optional)", contactHint: "Only to help you if you need to recover your license.",
+      transferBtn: "Pay by bank transfer", transferNote: "We message you on WhatsApp with the account details; once we receive the payment, we send you your license key.",
       payBtn: "Pay US$10.00 with PayPal", fine: "You’ll be redirected to PayPal to complete the payment. We don’t store your card details.",
       doneMsg: "Payment confirmed! Here is your Censo Materno license.", licIdLabel: "License ID", licKeyLabel: "License key",
       copy: "Copy key", copied: "Key copied ✓",
@@ -362,6 +366,14 @@
   });
   $("retry-btn").addEventListener("click", function () {
     finishOrderId = null; payLabelKey = "payBtn"; applyLang(); message(""); show("step-form");
+  });
+
+  // Transferencia: abre WhatsApp con el mensaje listo (no toca PayPal ni Firebase).
+  $("transfer-btn").addEventListener("click", function () {
+    var nm = ($("customerName").value || "").trim();
+    var msg = "Hola, quiero pagar Censo Materno (licencia completa, US$10) por transferencia." +
+      (nm ? " Nombre para la licencia: " + nm : "");
+    this.href = "https://wa.me/50584350255?text=" + encodeURIComponent(msg);
   });
 
   // ---- Arranque ----------------------------------------------------------
